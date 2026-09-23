@@ -6,7 +6,6 @@ Workshop on virtualization as an architectural mechanism for modularity, isolati
 |---|---|
 | Docker Hub repository | [hub.docker.com/r/juancruz3745/virtualization-lab](https://hub.docker.com/r/juancruz3745/virtualization-lab) |
 | Public deployment URL | http://ec2-54-167-131-101.compute-1.amazonaws.com:8080/greeting?name=AWS |
-| Demo video | `<video-link>` <!-- TODO --> |
 
 ## Technology baseline
 
@@ -66,8 +65,9 @@ curl "http://localhost:9100/greeting?name=EnvPort"
 
 Evidence: [`evidence/local-run.log`](evidence/local-run.log) (`Tomcat started on port 9000`).
 
-<!-- TODO: screenshot of the browser at http://localhost:9000/greeting?name=Pedro -->
-<!-- ![Local execution](evidence/01-local-run.png) -->
+Browser at `http://localhost:9000/greeting?name=Pedro`:
+
+![Local execution](evidence/01-local-run.png)
 
 ## Part 2 – Docker image and isolated containers
 
@@ -113,9 +113,13 @@ virtualization-lab-2 -> hostname=fb5103701547 pid1=java ip=172.17.0.3
 virtualization-lab-3 -> hostname=85933e998e7f pid1=java ip=172.17.0.4
 ```
 
-<!-- TODO: screenshots of `docker images`, `docker ps` and Docker Desktop -->
-<!-- ![Docker images](evidence/02-docker-images.png) -->
-<!-- ![Running containers](evidence/03-docker-ps.png) -->
+Each container answered independently in the browser:
+
+| `http://localhost:34000/greeting?name=Container` | `http://localhost:34001/greeting?name=Container2` | `http://localhost:34002/greeting?name=Container3` |
+|---|---|---|
+| ![Container 1](evidence/03-container-34000.png) | ![Container 2](evidence/03-container-34001.png) | ![Container 3](evidence/03-container-34002.png) |
+
+The complete `docker images` / `docker ps` output is in [`evidence/part2-containers.txt`](evidence/part2-containers.txt).
 
 ## Part 3 – Multi-container environment with Docker Compose
 
@@ -157,8 +161,11 @@ virtualization-web   containerizing_deploying_workshop-web   web       Up 15 sec
 
 Volume persistence was verified: after `docker compose down` and `up -d`, `db.messages.countDocuments()` still returned `1`; after `docker compose down -v` both volumes were removed.
 
-<!-- TODO: screenshot of Docker Desktop showing the compose stack and the mongosh session -->
-<!-- ![Compose](evidence/04-compose.png) -->
+Browser at `http://localhost:8087/greeting?name=Compose` (web service of the Compose stack):
+
+![Compose](evidence/04-compose.png)
+
+The `docker compose ps`, logs and `mongosh` session are in [`evidence/part3-compose.txt`](evidence/part3-compose.txt).
 
 ## Part 4 – Publish the image to Docker Hub
 
@@ -170,8 +177,9 @@ docker push juancruz3745/virtualization-lab:1.0
 docker push juancruz3745/virtualization-lab:latest
 ```
 
-<!-- TODO: screenshot of the Docker Hub "Tags" tab showing 1.0 and latest -->
-<!-- ![Docker Hub](evidence/05-dockerhub-tags.png) -->
+Docker Hub repository, **Tags** tab: `latest` and `1.0` point to the same digest (`linux/amd64`). Push output: [`evidence/part4-dockerhub.txt`](evidence/part4-dockerhub.txt).
+
+![Docker Hub tags](evidence/05-dockerhub-tags.jpg)
 
 ## Part 5 – Deployment on AWS EC2
 
