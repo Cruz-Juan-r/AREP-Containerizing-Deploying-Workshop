@@ -234,6 +234,7 @@ docker run -d --name virtualization-lab --restart unless-stopped -e PORT=9000 -p
 | Storage | 10 GiB gp3 |
 | Key pair | `vockey` |
 | Security group | `virtualization-lab-sg`: 22/tcp from my IP `/32`, 8080/tcp from `0.0.0.0/0` |
+| Also on this VM | The framework extension (repository 2) runs as a second container on port 80 ([AREP-Lambda-WebFramework-2](https://github.com/Cruz-Juan-r/AREP-Lambda-WebFramework-2)); port 80/tcp was added to the same security group for it |
 | Public DNS | `ec2-54-167-131-101.compute-1.amazonaws.com` |
 
 The application answered about 50 seconds after the instance reached the *running* state ([`evidence/part5-ec2.txt`](evidence/part5-ec2.txt)):
