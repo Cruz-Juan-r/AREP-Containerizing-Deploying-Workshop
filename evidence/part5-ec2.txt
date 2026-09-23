@@ -1,0 +1,35 @@
+# EC2 deployment (us-east-1)
+instance: i-0af0789a2f2574789 (virtualization-lab), t3.micro, Amazon Linux 2023 (ami-0fef201115eefe936), 10 GiB gp3
+security group: virtualization-lab-sg -> 22/tcp from 186.84.21.48/32, 8080/tcp from 0.0.0.0/0
+public DNS: ec2-54-167-131-101.compute-1.amazonaws.com (54.167.131.101)
+
+$ curl -i http://ec2-54-167-131-101.compute-1.amazonaws.com:8080/greeting?name=AWS
+HTTP/1.1 200 
+Content-Type: text/plain;charset=UTF-8
+Content-Length: 11
+Date: Wed, 23 Sep 2026 16:13:00 GMT
+
+Hello, AWS!
+
+# Over SSH (ssh -i labsuser.pem ec2-user@ec2-54-167-131-101.compute-1.amazonaws.com)
+[ec2-user@ip-172-31-30-21 ~]$ docker ps
+CONTAINER ID   IMAGE                                 COMMAND               CREATED          STATUS          PORTS                                       NAMES
+8bafc91474b0   juancruz3745/virtualization-lab:1.0   "java -jar app.jar"   18 minutes ago   Up 18 minutes   0.0.0.0:8080->9000/tcp, :::8080->9000/tcp   virtualization-lab
+
+[ec2-user@ip-172-31-30-21 ~]$ docker images
+REPOSITORY                        TAG       IMAGE ID       CREATED             SIZE
+juancruz3745/virtualization-lab   1.0       546cf28cff37   About an hour ago   507MB
+
+[ec2-user@ip-172-31-30-21 ~]$ docker logs virtualization-lab | grep -E 'Starting RestService|Tomcat started|Started RestService'
+2026-09-23T16:12:21.425Z  INFO 1 --- [           main] c.e.e.v.RestServiceApplication           : Starting RestServiceApplication v1.0.0 using Java 21.0.12.1 with PID 1 (/app/app.jar started by root in /app)
+2026-09-23T16:12:25.362Z  INFO 1 --- [           main] o.s.boot.tomcat.TomcatWebServer          : Tomcat started on port 9000 (http) with context path '/'
+2026-09-23T16:12:25.409Z  INFO 1 --- [           main] c.e.e.v.RestServiceApplication           : Started RestServiceApplication in 5.623 seconds (process running for 7.158)
+
+[ec2-user@ip-172-31-30-21 ~]$ curl http://localhost:8080/greeting?name=AWS
+Hello, AWS!
+
+[ec2-user@ip-172-31-30-21 ~]$ head -2 /etc/os-release
+NAME="Amazon Linux"
+VERSION="2023"
+[ec2-user@ip-172-31-30-21 ~]$ docker --version
+Docker version 25.0.14, build 0bab007

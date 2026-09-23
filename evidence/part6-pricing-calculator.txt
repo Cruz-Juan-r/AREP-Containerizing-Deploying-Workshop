@@ -1,0 +1,19 @@
+# AWS Pricing Calculator estimate (created 2026-09-23, region US East (N. Virginia))
+# Public link (expires after 1 year): https://calculator.aws/#/estimate?id=e1da173ca5bda9bdfaa20ca59901267ebdd94ad2
+
+Group / Service                          Configuration                                                         Monthly USD
+Small workload - 10,000 req/month                                                                                12.13
+  Amazon EC2                             1x t3.micro, Linux, On-Demand 100%, 10 GB gp3, 1 GB out to Internet     8.48
+  Amazon VPC                             1 in-use public IPv4 address                                             3.65
+Medium workload - 100,000 req/month                                                                              19.72
+  Amazon EC2                             1x t3.small, Linux, On-Demand 100%, 10 GB gp3, 1 GB out to Internet    16.07
+  Amazon VPC                             1 in-use public IPv4 address                                             3.65
+Large workload - 1,000,000 req/month (HA)                                                                        56.02
+  Amazon EC2                             2x t3.small, Linux, On-Demand 100%, 10 GB gp3 each, 1 GB out           32.06
+  Amazon VPC                             2 in-use public IPv4 addresses                                           7.30
+  Elastic Load Balancing                 1 Application Load Balancer, 1 GB/month processed, ~1 req/s             16.66
+TOTAL (all three scenarios together, not a real deployment)                                                      87.87
+
+Unit prices shown by the calculator: t3.micro 0.0104 USD/h, t3.small 0.0208 USD/h, gp3 0.08 USD/GB-month,
+public IPv4 0.005 USD/h, data transfer out to Internet 0.09 USD/GB (calculator excludes the 100 GB/month free allowance).
+Note: the calculator does not accept decimal GB, so outbound transfer (0.01 GB / 0.1 GB / 1 GB) was rounded up to 1 GB.

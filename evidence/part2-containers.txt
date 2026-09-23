@@ -1,0 +1,17 @@
+$ docker ps
+CONTAINER ID   IMAGE                    STATUS         PORTS                                           NAMES
+85933e998e7f   virtualization-lab:1.0   Up 5 seconds   0.0.0.0:34002->9000/tcp, [::]:34002->9000/tcp   virtualization-lab-3
+fb5103701547   virtualization-lab:1.0   Up 6 seconds   0.0.0.0:34001->9000/tcp, [::]:34001->9000/tcp   virtualization-lab-2
+d73a2a4881d5   virtualization-lab:1.0   Up 8 seconds   0.0.0.0:34000->9000/tcp, [::]:34000->9000/tcp   virtualization-lab-1
+
+$ curl http://localhost:34000/greeting?name=Container
+Hello, Container!
+$ curl http://localhost:34001/greeting?name=Container2
+Hello, Container2!
+$ curl http://localhost:34002/greeting?name=Container3
+Hello, Container3!
+
+# Each container has its own hostname, and java runs as PID 1 in its own PID namespace:
+virtualization-lab-1 -> hostname=d73a2a4881d5 pid1=java ip=172.17.0.2
+virtualization-lab-2 -> hostname=fb5103701547 pid1=java ip=172.17.0.3
+virtualization-lab-3 -> hostname=85933e998e7f pid1=java ip=172.17.0.4

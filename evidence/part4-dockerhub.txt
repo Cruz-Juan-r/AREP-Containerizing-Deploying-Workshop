@@ -1,0 +1,7 @@
+$ docker push juancruz3745/virtualization-lab:1.0
+1.0: digest: sha256:2a872fa4a73076b729d3732c2e4d1fa77296da4a94e36ffa3df89b7dcb9460dd size: 856
+$ docker push juancruz3745/virtualization-lab:latest
+latest: digest: sha256:2a872fa4a73076b729d3732c2e4d1fa77296da4a94e36ffa3df89b7dcb9460dd size: 856
+# Docker Hub API tags:
+"name":"1.0"
+"name":"latest"

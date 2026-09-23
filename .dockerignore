@@ -1,0 +1,12 @@
+.git
+.idea
+.mvn
+src
+evidence
+*.md
+mvnw
+mvnw.cmd
+target/classes
+target/generated-sources
+target/maven-*
+target/*.original

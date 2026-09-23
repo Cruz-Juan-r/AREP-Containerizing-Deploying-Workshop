@@ -1,0 +1,58 @@
+$ docker compose ps
+NAME                 IMAGE                                   SERVICE   STATUS          PORTS
+virtualization-db    mongo:8                                 db        Up 16 seconds   0.0.0.0:27017->27017/tcp, [::]:27017->27017/tcp
+virtualization-web   containerizing_deploying_workshop-web   web       Up 15 seconds   0.0.0.0:8087->9000/tcp, [::]:8087->9000/tcp
+
+$ curl http://localhost:8087/greeting?name=Compose
+Hello, Compose!
+
+$ docker compose logs web (tail)
+virtualization-web  | 2026-09-23T15:30:33.428Z  INFO 1 --- [           main] c.e.e.v.RestServiceApplication           : Starting RestServiceApplication v1.0.0 using Java 21.0.12.1 with PID 1 (/app/app.jar started by root in /app)
+virtualization-web  | 2026-09-23T15:30:34.977Z  INFO 1 --- [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+virtualization-web  | 2026-09-23T15:30:34.979Z  INFO 1 --- [           main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/11.0.24]
+virtualization-web  | 2026-09-23T15:30:35.557Z  INFO 1 --- [           main] o.s.boot.tomcat.TomcatWebServer          : Tomcat started on port 9000 (http) with context path '/'
+virtualization-web  | 2026-09-23T15:30:35.576Z  INFO 1 --- [           main] c.e.e.v.RestServiceApplication           : Started RestServiceApplication in 3.001 seconds (process running for 3.896)
+
+$ docker compose logs db (tail)
+"msg":"Build Info"
+"msg":"Waiting for connections"
+
+$ docker compose exec db mongosh --quiet workshop
+[
+  'admin',
+  'config',
+  'local',
+  'workshop'
+]
+[
+  {
+    _id: ObjectId('6ab3f0aa7b140663178b1dd8'),
+    message: 'Hello from Docker Compose'
+  }
+]
+
+# web -> db name resolution on the compose network:
+172.21.0.2      db
+
+$ docker network ls / volume ls (compose resources)
+NETWORK ID     NAME                                        DRIVER    SCOPE
+13a7fb6e0353   containerizing_deploying_workshop_default   bridge    local
+DRIVER    VOLUME NAME
+local     containerizing_deploying_workshop_mongodb
+local     containerizing_deploying_workshop_mongodb_config
+
+# Volume persistence test
+$ docker compose down
+ Container virtualization-db Removed 
+ Network containerizing_deploying_workshop_default Removing 
+ Network containerizing_deploying_workshop_default Removed 
+$ docker compose up -d
+ Container virtualization-web Started 
+$ mongosh: db.messages.countDocuments()  (after down/up)
+1
+$ docker compose down -v
+ Network containerizing_deploying_workshop_default Removing 
+ Volume containerizing_deploying_workshop_mongodb_config Removed 
+ Volume containerizing_deploying_workshop_mongodb Removed 
+ Network containerizing_deploying_workshop_default Removed 
+remaining compose volumes: 0
